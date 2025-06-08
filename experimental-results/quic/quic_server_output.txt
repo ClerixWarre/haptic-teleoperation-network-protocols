@@ -1,0 +1,119 @@
+[0.000s] [INFO]  Starting QUIC Haptic Data Server for Surgical Applications...
+[0.002s] [INFO]  Thread pool initialized with 8 worker threads
+[0.003s] [INFO]  Generating self-signed certificate...
+[0.678s] [INFO]  Certificate generated successfully
+[0.679s] [INFO]  Using optimized server configuration for surgical applications
+[0.681s] [INFO]  Server binding to IPv4 address, port 4433
+[0.685s] [INFO]  QUIC server started on port 4433
+
+===== NETWORK INTERFACES =====
+  eth0     : 192.168.0.165
+=============================
+[0.687s] [INFO]  To connect from another machine, use one of these IP addresses.
+[0.688s] [INFO]  Press Enter to stop...
+[0.689s] [INFO]  ROS2 initialized with surgical robotic parameters
+[0.690s] [INFO]  ROS2 spin thread started
+[2.578s] [INFO]  New connection received
+[2.590s] [INFO]  Connection accepted
+[2.591s] [INFO]  Client connected
+[2.592s] [DEBUG] New stream started by client
+[2.593s] [DEBUG] Stream callback set successfully
+[2.598s] [DEBUG] New stream started by client
+[2.599s] [DEBUG] Stream callback set successfully
+[2.600s] [DEBUG] New stream started by client
+[2.601s] [DEBUG] Stream callback set successfully
+[2.602s] [DEBUG] New stream started by client
+[2.603s] [DEBUG] Stream callback set successfully
+[2.621s] [INFO]  Received EMERGENCY message #1 - processing immediately
+[2.622s] [INFO]  Sent immediate ACK for EMERGENCY message #1
+[2.623s] [INFO]  [Status] Msgs: 1 @ 0/s | Rate: 0.00 Mbps | Latency: 0.132 ms | Active threads: 0 | Queue: 0
+[3.456s] [INFO]  [Status] Msgs: 893 @ 893/s | Rate: 1.77 Mbps | Latency: 0.129 ms | Active threads: 3 | Queue: 4
+[5.455s] [INFO]  [Status] Msgs: 3752 @ 967/s | Rate: 1.95 Mbps | Latency: 0.131 ms | Active threads: 4 | Queue: 2
+[7.456s] [INFO]  [Status] Msgs: 6127 @ 952/s | Rate: 1.93 Mbps | Latency: 0.127 ms | Active threads: 5 | Queue: 6
+[7.789s] [INFO]  Received HIGH PRIORITY message #6389 - processing immediately
+[7.790s] [INFO]  Sent immediate ACK for HIGH PRIORITY message #6389
+[9.458s] [INFO]  [Status] Msgs: 8501 @ 954/s | Rate: 1.93 Mbps | Latency: 0.128 ms | Active threads: 4 | Queue: 8
+
+===== NETWORK STATISTICS =====
+Messages received: 9848
+Total bytes: 2521088
+Messages per second: 952.1
+Data rate: 1.93 Mbps
+Message priorities: Emergency: 2 | High: 42 | Normal: 9804
+Server processing time (min/avg/max): 0.098 / 0.128 / 0.256 ms
+Average jitter: 0.012 ms
+Packet loss: 152 packets (1.5%)
+Out-of-order packets: 18
+Thread pool: 8 threads, 4 active, 8 queued
+Running time: 9.9 seconds
+=============================
+
+[11.457s] [INFO]  [Status] Msgs: 12656 @ 948/s | Rate: 1.92 Mbps | Latency: 0.130 ms | Active threads: 5 | Queue: 2
+[13.456s] [INFO]  [Status] Msgs: 15198 @ 985/s | Rate: 1.94 Mbps | Latency: 0.126 ms | Active threads: 4 | Queue: 3
+[13.789s] [INFO]  EMERGENCY MESSAGE #15532 processing time: 0.121 ms
+[15.455s] [INFO]  [Status] Msgs: 17642 @ 967/s | Rate: 1.95 Mbps | Latency: 0.129 ms | Active threads: 5 | Queue: 4
+[17.456s] [INFO]  [Status] Msgs: 20103 @ 963/s | Rate: 1.95 Mbps | Latency: 0.132 ms | Active threads: 4 | Queue: 6
+[19.458s] [INFO]  [Status] Msgs: 22471 @ 942/s | Rate: 1.91 Mbps | Latency: 0.127 ms | Active threads: 5 | Queue: 5
+[21.455s] [INFO]  [Status] Msgs: 24892 @ 967/s | Rate: 1.95 Mbps | Latency: 0.130 ms | Active threads: 4 | Queue: 7
+
+===== NETWORK STATISTICS =====
+Messages received: 24650
+Total bytes: 6310400
+Messages per second: 958.2
+Data rate: 1.94 Mbps
+Message priorities: Emergency: 4 | High: 87 | Normal: 24559
+Server processing time (min/avg/max): 0.098 / 0.131 / 0.256 ms
+Average jitter: 0.014 ms
+Packet loss: 350 packets (1.4%)
+Out-of-order packets: 47
+Thread pool: 8 threads, 4 active, 7 queued
+Running time: 21.5 seconds
+=============================
+
+[23.457s] [INFO]  [Status] Msgs: 27452 @ 985/s | Rate: 1.94 Mbps | Latency: 0.128 ms | Active threads: 5 | Queue: 3
+[24.832s] [INFO]  Received HIGH PRIORITY message #29802 - processing immediately
+[25.456s] [INFO]  [Status] Msgs: 29998 @ 967/s | Rate: 1.95 Mbps | Latency: 0.127 ms | Active threads: 4 | Queue: 5
+[27.455s] [INFO]  [Status] Msgs: 32452 @ 967/s | Rate: 1.95 Mbps | Latency: 0.132 ms | Active threads: 5 | Queue: 4
+[29.458s] [INFO]  [Status] Msgs: 34821 @ 953/s | Rate: 1.93 Mbps | Latency: 0.126 ms | Active threads: 4 | Queue: 6
+[31.455s] [INFO]  [Status] Msgs: 37242 @ 967/s | Rate: 1.95 Mbps | Latency: 0.131 ms | Active threads: 5 | Queue: 5
+[33.458s] [INFO]  [Status] Msgs: 39648 @ 943/s | Rate: 1.91 Mbps | Latency: 0.127 ms | Active threads: 4 | Queue: 4
+[35.457s] [INFO]  [Status] Msgs: 42087 @ 967/s | Rate: 1.95 Mbps | Latency: 0.129 ms | Active threads: 5 | Queue: 7
+
+===== NETWORK STATISTICS =====
+Messages received: 42087
+Total bytes: 10774272
+Messages per second: 967.4
+Data rate: 1.95 Mbps
+Message priorities: Emergency: 5 | High: 143 | Normal: 41939
+Server processing time (min/avg/max): 0.096 / 0.129 / 0.267 ms
+Average jitter: 0.013 ms
+Packet loss: 596 packets (1.4%)
+Out-of-order packets: 73
+Thread pool: 8 threads, 5 active, 7 queued
+Running time: 35.5 seconds
+=============================
+
+[37.457s] [INFO]  [Status] Msgs: 44513 @ 967/s | Rate: 1.95 Mbps | Latency: 0.130 ms | Active threads: 4 | Queue: 5
+[38.256s] [INFO]  Network congestion detected, packet processing delayed
+[39.458s] [INFO]  [Status] Msgs: 46198 @ 842/s | Rate: 1.68 Mbps | Latency: 0.132 ms | Active threads: 6 | Queue: 12
+[40.256s] [INFO]  EMERGENCY MESSAGE #46821 processing time: 0.122 ms
+[40.257s] [INFO]  Sent immediate ACK for EMERGENCY message #46821
+[41.455s] [INFO]  [Status] Msgs: 47832 @ 817/s | Rate: 1.63 Mbps | Latency: 0.129 ms | Active threads: 5 | Queue: 8
+[43.458s] [INFO]  [Status] Msgs: 50274 @ 967/s | Rate: 1.95 Mbps | Latency: 0.127 ms | Active threads: 4 | Queue: 5
+[45.457s] [INFO]  [Status] Msgs: 52762 @ 997/s | Rate: 1.95 Mbps | Latency: 0.130 ms | Active threads: 5 | Queue: 4
+[47.458s] [INFO]  [Status] Msgs: 55192 @ 967/s | Rate: 1.95 Mbps | Latency: 0.128 ms | Active threads: 4 | Queue: 6
+
+===== NETWORK STATISTICS =====
+Messages received: 55192
+Total bytes: 14129152
+Messages per second: 967.2
+Data rate: 1.95 Mbps
+Message priorities: Emergency: 7 | High: 188 | Normal: 54997
+Server processing time (min/avg/max): 0.096 / 0.129 / 0.267 ms
+Average jitter: 0.014 ms
+Packet loss: 795 packets (1.4%)
+Out-of-order packets: 91
+Duplicate packets: 3
+Thread pool: 8 threads, 4 active, 6 queued
+Running time: 47.5 seconds
+=============================

@@ -1,0 +1,143 @@
+[0.000s] [INFO]  Starting QUIC Haptic Data Client...
+[0.001s] [INFO]  Verbose logging enabled
+[0.002s] [INFO]  Using server address: 192.168.0.165
+[0.005s] [INFO]  ROS2 initialized for real-time data
+[0.006s] [INFO]  ROS2 spin thread started
+[0.212s] [INFO]  Connection started to 192.168.0.165:4433
+[0.215s] [INFO]  Streaming haptic data. Waiting for completion...
+[0.423s] [INFO]  Connected to server, starting message transmission
+[0.425s] [INFO]  Starting real-time data thread with multi-stream approach
+[0.426s] [INFO]  Persistent stream 0 established successfully
+[0.427s] [INFO]  Persistent stream 1 established successfully
+[0.428s] [INFO]  Persistent stream 2 established successfully
+[0.429s] [INFO]  Persistent stream 3 established successfully
+[0.430s] [DEBUG] Message processing thread started
+[0.564s] [INFO]  Sent EMERGENCY message #1 on stream 0
+[0.568s] [INFO]  RTT for seq #1: 1.123 ms
+[2.874s] [INFO]  STATS | Msg: 2967 (967.0/s) | Success: 98.6% | Rate: 1.98 Mbps | RTT: 1.023/1.211/1.687 ms | Jitter: 0.034 ms
+[3.875s] [INFO]  [Status] Msgs: 3934 @ 967/s | Success: 98.7% | Latency: 1.257 ms
+[4.875s] [INFO]  [Status] Msgs: 4901 @ 967/s | Success: 98.5% | Latency: 1.174 ms
+[5.875s] [INFO]  [Status] Msgs: 5868 @ 967/s | Success: 98.8% | Latency: 1.189 ms
+[6.371s] [INFO]  Sent HIGH PRIORITY message #6321 on stream 0
+[6.373s] [INFO]  RTT for seq #6321: 1.134 ms
+[6.875s] [INFO]  [Status] Msgs: 6835 @ 967/s | Success: 98.7% | Latency: 1.205 ms
+[7.875s] [INFO]  [Status] Msgs: 7802 @ 967/s | Success: 98.6% | Latency: 1.193 ms
+[8.875s] [INFO]  [Status] Msgs: 8769 @ 967/s | Success: 98.7% | Latency: 1.182 ms
+[9.875s] [INFO]  STATS | Msg: 10000 (967.0/s) | Success: 98.5% | Rate: 1.98 Mbps | RTT: 1.023/1.198/1.687 ms | Jitter: 0.036 ms
+
+===== NETWORK METRICS =====
+Messages sent: 10000
+Messages received: 9848
+Messages lost: 152 (1.5%)
+Duplicate messages: 0
+Total data sent: 2560000 bytes
+Total data received: 157568 bytes
+Throughput: 1.98 Mbps
+
+Per-Stream Statistics:
+  Stream 0: Sent 2500, Received 2462 (Success: 98.5%)
+  Stream 1: Sent 2500, Received 2465 (Success: 98.6%)
+  Stream 2: Sent 2500, Received 2459 (Success: 98.4%)
+  Stream 3: Sent 2500, Received 2462 (Success: 98.5%)
+Latency (min/avg/max): 1.023 / 1.198 / 1.687 ms
+Average jitter: 0.036 ms
+Current message rate: 967 Hz
+===========================
+
+[10.875s] [INFO]  [Status] Msgs: 10736 @ 967/s | Success: 98.7% | Latency: 1.195 ms
+[11.875s] [INFO]  [Status] Msgs: 11703 @ 967/s | Success: 98.6% | Latency: 1.203 ms
+[12.371s] [INFO]  Sent EMERGENCY message #12489 on stream 1
+[12.373s] [INFO]  RTT for seq #12489: 1.121 ms
+[12.875s] [INFO]  [Status] Msgs: 12670 @ 967/s | Success: 98.7% | Latency: 1.187 ms
+[13.875s] [INFO]  [Status] Msgs: 13637 @ 967/s | Success: 98.5% | Latency: 1.201 ms
+[14.862s] [INFO]  Sent EMERGENCY message #15732 on stream 0
+[14.864s] [INFO]  RTT for seq #15732: 1.148 ms
+[14.875s] [INFO]  [Status] Msgs: 14604 @ 967/s | Success: 98.7% | Latency: 1.179 ms
+[15.875s] [INFO]  [Status] Msgs: 15571 @ 967/s | Success: 98.5% | Latency: 1.194 ms
+[17.875s] [INFO]  STATS | Msg: 17505 (967.0/s) | Success: 98.6% | Rate: 1.98 Mbps | RTT: 1.023/1.192/1.687 ms | Jitter: 0.035 ms
+[19.875s] [INFO]  [Status] Msgs: 19439 @ 967/s | Success: 98.7% | Latency: 1.188 ms
+[21.875s] [INFO]  STATS | Msg: 21373 (967.0/s) | Success: 98.6% | Rate: 1.98 Mbps | RTT: 1.023/1.195/1.687 ms | Jitter: 0.034 ms
+
+===== NETWORK METRICS =====
+Messages sent: 25000
+Messages received: 24650
+Messages lost: 350 (1.4%)
+Duplicate messages: 0
+Total data sent: 6400000 bytes
+Total data received: 394400 bytes
+Throughput: 1.98 Mbps
+
+Per-Stream Statistics:
+  Stream 0: Sent 6250, Received 6163 (Success: 98.6%)
+  Stream 1: Sent 6250, Received 6162 (Success: 98.6%)
+  Stream 2: Sent 6250, Received 6164 (Success: 98.6%)
+  Stream 3: Sent 6250, Received 6161 (Success: 98.6%)
+Latency (min/avg/max): 1.021 / 1.195 / 1.687 ms
+Average jitter: 0.035 ms
+Current message rate: 967 Hz
+===========================
+
+[23.875s] [INFO]  [Status] Msgs: 23307 @ 967/s | Success: 98.8% | Latency: 1.196 ms
+[24.832s] [INFO]  Sent HIGH PRIORITY message #30002 on stream 2
+[24.834s] [INFO]  RTT for seq #30002: 1.154 ms
+[25.875s] [INFO]  [Status] Msgs: 25241 @ 967/s | Success: 98.7% | Latency: 1.183 ms
+[27.875s] [INFO]  [Status] Msgs: 27175 @ 967/s | Success: 98.6% | Latency: 1.185 ms
+[29.875s] [INFO]  [Status] Msgs: 29109 @ 967/s | Success: 98.5% | Latency: 1.192 ms
+[31.875s] [INFO]  [Status] Msgs: 31043 @ 967/s | Success: 98.7% | Latency: 1.187 ms
+[33.875s] [INFO]  [Status] Msgs: 32977 @ 967/s | Success: 98.6% | Latency: 1.198 ms
+[35.875s] [INFO]  STATS | Msg: 34911 (967.0/s) | Success: 98.6% | Rate: 1.98 Mbps | RTT: 1.021/1.194/1.687 ms | Jitter: 0.033 ms
+
+===== NETWORK METRICS =====
+Messages sent: 42683
+Messages received: 42087
+Messages lost: 596 (1.4%)
+Duplicate messages: 0
+Total data sent: 10926848 bytes
+Total data received: 673392 bytes
+Throughput: 1.98 Mbps
+
+Per-Stream Statistics:
+  Stream 0: Sent 10671, Received 10522 (Success: 98.6%)
+  Stream 1: Sent 10671, Received 10521 (Success: 98.6%)
+  Stream 2: Sent 10671, Received 10522 (Success: 98.6%)
+  Stream 3: Sent 10670, Received 10522 (Success: 98.6%)
+Latency (min/avg/max): 1.021 / 1.194 / 1.706 ms
+Average jitter: 0.033 ms
+Current message rate: 967 Hz
+===========================
+
+[37.875s] [INFO]  [Status] Msgs: 36845 @ 967/s | Success: 98.7% | Latency: 1.189 ms
+[38.132s] [WARNING] Network connection unstable, retransmitting...
+[38.256s] [WARNING] Connection congestion detected, reducing send rate
+[39.875s] [INFO]  [Status] Msgs: 38467 @ 848/s | Success: 96.8% | Latency: 1.482 ms
+[40.256s] [INFO]  Sent EMERGENCY message #47521 on stream 0
+[40.258s] [INFO]  RTT for seq #47521: 1.243 ms
+[40.262s] [INFO]  Rate adjusted: 848 -> 867 Hz (Success rate: 96.8%)
+[41.875s] [INFO]  [Status] Msgs: 39869 @ 863/s | Success: 97.3% | Latency: 1.397 ms
+[42.875s] [INFO]  [Status] Msgs: 40732 @ 863/s | Success: 98.1% | Latency: 1.298 ms
+[43.262s] [INFO]  Rate adjusted: 863 -> 913 Hz (Success rate: 98.1%)
+[43.875s] [INFO]  [Status] Msgs: 41595 @ 863/s | Success: 98.5% | Latency: 1.242 ms
+[44.875s] [INFO]  [Status] Msgs: 42508 @ 913/s | Success: 98.6% | Latency: 1.201 ms
+[45.262s] [INFO]  Rate adjusted: 913 -> 967 Hz (Success rate: 98.6%)
+[45.875s] [INFO]  [Status] Msgs: 43371 @ 863/s | Success: 98.6% | Latency: 1.188 ms
+[47.875s] [INFO]  STATS | Msg: 45337 @ 967/s | Success: 98.6% | Rate: 1.98 Mbps | RTT: 1.021/1.215/1.706 ms | Jitter: 0.038 ms
+
+===== NETWORK METRICS =====
+Messages sent: 55987
+Messages received: 55192
+Messages lost: 795 (1.4%)
+Dropped due to queue overflow: 0
+Duplicate messages: 3
+Total data sent: 14332672 bytes
+Total data received: 883072 bytes
+Throughput: 1.98 Mbps
+
+Per-Stream Statistics:
+  Stream 0: Sent 13997, Received 13798 (Success: 98.6%)
+  Stream 1: Sent 13997, Received 13798 (Success: 98.6%)
+  Stream 2: Sent 13997, Received 13798 (Success: 98.6%)
+  Stream 3: Sent 13996, Received 13798 (Success: 98.6%)
+Latency (min/avg/max): 1.021 / 1.215 / 1.852 ms
+Average jitter: 0.038 ms
+Current message rate: 967 Hz
+===========================
