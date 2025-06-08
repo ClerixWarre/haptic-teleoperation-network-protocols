@@ -263,6 +263,7 @@ The [`experimental-results/`](./experimental-results/) directory contains compre
 
 ## Acknowledgments
 
+- **Thesis Supervisor***: Prof. dr. Nikolaos Tsiogkas, Hasselt University
 - **Geomagic Touch ROS2 Integration**: Based on [IvoD1998/Geomagic_Touch_ROS2](https://github.com/IvoD1998/Geomagic_Touch_ROS2)
 - **Research Supervision**: ACRO Research Group, UHasselt
 - **Robot Control System**: Built upon previous ACRO research implementations
