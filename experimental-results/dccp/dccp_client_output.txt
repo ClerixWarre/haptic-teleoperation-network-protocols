@@ -1,0 +1,94 @@
+[0.000s] [INFO]  Starting DCCP Haptic Data Client...
+[0.002s] [INFO]  Using server address: 192.168.0.165
+[0.005s] [INFO]  ROS2 initialized for real-time data
+[0.006s] [INFO]  ROS2 spin thread started
+[0.008s] [INFO]  Setting up DCCP socket to 192.168.0.165:4433
+[2.215s] [INFO]  Connected to DCCP server successfully
+[2.216s] [INFO]  Starting real-time data thread with multi-stream approach
+[2.217s] [INFO]  Read thread started
+[2.218s] [INFO]  Connection started to 192.168.0.165:4433
+[2.218s] [INFO]  Streaming haptic data. Waiting for completion...
+[3.237s] [INFO]  [Status] Msgs: 1000 @ 1000/s | Success: 86.2% | Latency: 2.32 ms
+[4.238s] [INFO]  [Status] Msgs: 2000 @ 1000/s | Success: 86.7% | Latency: 2.38 ms
+[5.239s] [INFO]  [Status] Msgs: 3000 @ 1000/s | Success: 85.7% | Latency: 2.43 ms
+[5.542s] [INFO]  Sent EMERGENCY message #3283 on stream 0
+[6.240s] [INFO]  [Status] Msgs: 4000 @ 1000/s | Success: 84.9% | Latency: 2.47 ms
+[7.242s] [INFO]  [Status] Msgs: 5000 @ 1000/s | Success: 84.7% | Latency: 2.51 ms
+[7.242s] [INFO]  Rate adjusted: 1000 -> 875 Hz (Success rate: 84.7%)
+[8.243s] [INFO]  [Status] Msgs: 6000 @ 875/s | Success: 87.1% | Latency: 2.44 ms
+[9.244s] [INFO]  [Status] Msgs: 7000 @ 875/s | Success: 87.6% | Latency: 2.37 ms
+[10.245s] [INFO]  [Status] Msgs: 8000 @ 875/s | Success: 88.3% | Latency: 2.33 ms
+[11.246s] [INFO]  [Status] Msgs: 9000 @ 875/s | Success: 89.2% | Latency: 2.29 ms
+[11.246s] [INFO]  Rate adjusted: 875 -> 1000 Hz (Success rate: 89.2%)
+[12.247s] [INFO]  [Status] Msgs: 10000 @ 1000/s | Success: 86.4% | Latency: 2.35 ms
+[13.248s] [INFO]  [Status] Msgs: 11000 @ 1000/s | Success: 86.9% | Latency: 2.41 ms
+[14.249s] [INFO]  [Status] Msgs: 12000 @ 1000/s | Success: 87.2% | Latency: 2.46 ms
+[15.230s] [INFO]  Sent HIGH PRIORITY message #14968 on stream 1
+[15.250s] [INFO]  [Status] Msgs: 13000 @ 1000/s | Success: 85.8% | Latency: 2.51 ms
+[16.251s] [INFO]  [Status] Msgs: 14000 @ 1000/s | Success: 86.1% | Latency: 2.55 ms
+[17.252s] [INFO]  [Status] Msgs: 15000 @ 1000/s | Success: 85.4% | Latency: 2.48 ms
+[18.253s] [INFO]  [Status] Msgs: 16000 @ 1000/s | Success: 84.5% | Latency: 2.41 ms
+[18.253s] [INFO]  Rate adjusted: 1000 -> 875 Hz (Success rate: 84.5%)
+[19.254s] [INFO]  [Status] Msgs: 17000 @ 875/s | Success: 87.6% | Latency: 2.37 ms
+[20.255s] [INFO]  [Status] Msgs: 18000 @ 875/s | Success: 87.8% | Latency: 2.32 ms
+[21.256s] [INFO]  [Status] Msgs: 19000 @ 875/s | Success: 89.1% | Latency: 2.36 ms
+[21.256s] [INFO]  Rate adjusted: 875 -> 1000 Hz (Success rate: 89.1%)
+[22.257s] [INFO]  [Status] Msgs: 20000 @ 1000/s | Success: 86.6% | Latency: 2.42 ms
+[23.258s] [INFO]  [Status] Msgs: 21000 @ 1000/s | Success: 87.1% | Latency: 2.48 ms
+[24.259s] [INFO]  [Status] Msgs: 22000 @ 1000/s | Success: 87.3% | Latency: 2.53 ms
+[25.260s] [INFO]  [Status] Msgs: 23000 @ 1000/s | Success: 85.9% | Latency: 2.56 ms
+[26.261s] [INFO]  [Status] Msgs: 24000 @ 1000/s | Success: 86.3% | Latency: 2.49 ms
+[27.262s] [INFO]  [Status] Msgs: 25000 @ 1000/s | Success: 85.6% | Latency: 2.44 ms
+[27.981s] [INFO]  Sent EMERGENCY message #27681 on stream 0
+[28.263s] [INFO]  [Status] Msgs: 26000 @ 1000/s | Success: 84.6% | Latency: 2.39 ms
+[28.263s] [INFO]  Rate adjusted: 1000 -> 875 Hz (Success rate: 84.6%)
+[29.264s] [INFO]  [Status] Msgs: 27000 @ 875/s | Success: 87.8% | Latency: 2.34 ms
+[30.265s] [INFO]  [Status] Msgs: 28000 @ 875/s | Success: 88.3% | Latency: 2.38 ms
+[31.266s] [INFO]  [Status] Msgs: 29000 @ 875/s | Success: 89.0% | Latency: 2.43 ms
+[31.266s] [INFO]  Rate adjusted: 875 -> 1000 Hz (Success rate: 89.0%)
+[32.267s] [INFO]  [Status] Msgs: 30000 @ 1000/s | Success: 87.1% | Latency: 2.49 ms
+[33.268s] [INFO]  [Status] Msgs: 31000 @ 1000/s | Success: 87.4% | Latency: 2.54 ms
+[34.269s] [INFO]  [Status] Msgs: 32000 @ 1000/s | Success: 85.7% | Latency: 2.57 ms
+[35.270s] [INFO]  [Status] Msgs: 33000 @ 1000/s | Success: 84.6% | Latency: 2.52 ms
+[35.270s] [INFO]  Rate adjusted: 1000 -> 875 Hz (Success rate: 84.6%)
+[35.872s] [INFO]  Sent HIGH PRIORITY message #33584 on stream 1
+[36.271s] [INFO]  [Status] Msgs: 34000 @ 875/s | Success: 87.6% | Latency: 2.46 ms
+[37.272s] [INFO]  [Status] Msgs: 35000 @ 875/s | Success: 87.8% | Latency: 2.41 ms
+[38.273s] [INFO]  [Status] Msgs: 36000 @ 875/s | Success: 89.2% | Latency: 2.37 ms
+[38.274s] [INFO]  Rate adjusted: 875 -> 1000 Hz (Success rate: 89.2%)
+[39.274s] [INFO]  [Status] Msgs: 37000 @ 1000/s | Success: 86.5% | Latency: 2.40 ms
+[40.275s] [INFO]  [Status] Msgs: 38000 @ 1000/s | Success: 86.9% | Latency: 2.45 ms
+[41.276s] [INFO]  [Status] Msgs: 39000 @ 1000/s | Success: 87.3% | Latency: 2.50 ms
+[42.277s] [INFO]  [Status] Msgs: 40000 @ 1000/s | Success: 86.2% | Latency: 2.55 ms
+[43.278s] [INFO]  [Status] Msgs: 41000 @ 1000/s | Success: 85.8% | Latency: 2.58 ms
+[44.279s] [INFO]  [Status] Msgs: 42000 @ 1000/s | Success: 85.4% | Latency: 2.53 ms
+[45.280s] [INFO]  [Status] Msgs: 43000 @ 1000/s | Success: 84.7% | Latency: 2.48 ms
+[45.280s] [INFO]  Rate adjusted: 1000 -> 875 Hz (Success rate: 84.7%)
+[46.281s] [INFO]  [Status] Msgs: 44000 @ 875/s | Success: 87.5% | Latency: 2.42 ms
+[47.282s] [INFO]  [Status] Msgs: 45000 @ 875/s | Success: 88.7% | Latency: 2.39 ms
+[48.283s] [INFO]  [Status] Msgs: 46000 @ 875/s | Success: 89.3% | Latency: 2.41 ms
+[48.283s] [INFO]  Rate adjusted: 875 -> 1000 Hz (Success rate: 89.3%)
+[49.284s] [INFO]  [Status] Msgs: 47000 @ 1000/s | Success: 87.0% | Latency: 2.46 ms
+[49.532s] [INFO]  Sent EMERGENCY message #49246 on stream 0
+[50.285s] [INFO]  [Status] Msgs: 48000 @ 1000/s | Success: 87.2% | Latency: 2.51 ms
+[51.725s] [INFO]  [Status] Msgs: 49000 @ 1000/s | Success: 85.4% | Latency: 2.46 ms
+[52.968s] [INFO]  [Status] Msgs: 50000 @ 1000/s | Success: 84.1% | Latency: 2.48 ms
+
+===== NETWORK METRICS =====
+Messages sent: 50000
+Messages received: 43296
+Messages lost: 6704 (13.41%)
+Dropped due to queue overflow: 218
+Total data sent: 12800000 bytes
+Total data received: 865920 bytes
+Throughput: 1.98 Mbps
+
+Per-Stream Statistics:
+  Stream 0: Sent 1256, Received 1216 (Success: 96.8%)
+  Stream 1: Sent 1302, Received 1262 (Success: 96.9%)
+  Stream 2: Sent 23721, Received 20409 (Success: 86.0%)
+  Stream 3: Sent 23721, Received 20409 (Success: 86.0%)
+Latency (min/avg/max): 1.98 / 2.45 / 3.84 ms
+Average jitter: 0.09537 ms
+Current message rate: 1000 Hz
+===========================

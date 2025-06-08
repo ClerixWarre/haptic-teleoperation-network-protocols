@@ -1,0 +1,96 @@
+[0.000s] [INFO]  Starting DCCP Haptic Data Server for Surgical Applications...
+[0.002s] [INFO]  Thread pool initialized with 12 worker threads
+[0.003s] [INFO]  Setting up DCCP server on port 4433
+[0.016s] [INFO]  DCCP server setup complete on port 4433
+
+===== NETWORK INTERFACES =====
+  eth0     : 192.168.0.165
+To connect from another machine, use one of these IP addresses.
+For local testing, use 'localhost' or '127.0.0.1'
+=============================
+
+[0.018s] [INFO]  DCCP server started on port 4433
+[0.018s] [INFO]  Press Enter to stop...
+[0.020s] [INFO]  ROS2 initialized with surgical robotic parameters
+[0.021s] [INFO]  ROS2 spin thread started
+[0.025s] [INFO]  Starting DCCP server main loop
+[2.217s] [INFO]  New client connected from: 192.168.0.111:43562
+[3.237s] [INFO]  [Status] Msgs: 1000 @ 862/s | Rate: 1.71 Mbps | Latency: 0.344 ms | Active threads: 6 | Queue: 11
+[4.238s] [INFO]  [Status] Msgs: 2000 @ 867/s | Rate: 1.72 Mbps | Latency: 0.341 ms | Active threads: 7 | Queue: 14
+[5.239s] [INFO]  [Status] Msgs: 3000 @ 856/s | Rate: 1.70 Mbps | Latency: 0.349 ms | Active threads: 5 | Queue: 9
+[5.542s] [INFO]  EMERGENCY MESSAGE #3283 processing time: 0.317 ms
+[5.542s] [INFO]  Sent ACK for EMERGENCY message #3283
+[5.543s] [INFO]  Published EMERGENCY message to ROS: #3283
+[6.240s] [INFO]  [Status] Msgs: 4000 @ 849/s | Rate: 1.68 Mbps | Latency: 0.337 ms | Active threads: 8 | Queue: 12
+[7.242s] [INFO]  [Status] Msgs: 5000 @ 847/s | Rate: 1.68 Mbps | Latency: 0.348 ms | Active threads: 6 | Queue: 10
+[8.243s] [INFO]  [Status] Msgs: 6000 @ 852/s | Rate: 1.69 Mbps | Latency: 0.355 ms | Active threads: 7 | Queue: 13
+[9.244s] [INFO]  [Status] Msgs: 7000 @ 761/s | Rate: 1.51 Mbps | Latency: 0.349 ms | Active threads: 6 | Queue: 11
+[10.245s] [INFO]  [Status] Msgs: 8000 @ 758/s | Rate: 1.50 Mbps | Latency: 0.345 ms | Active threads: 8 | Queue: 12
+[11.246s] [INFO]  [Status] Msgs: 9000 @ 763/s | Rate: 1.51 Mbps | Latency: 0.351 ms | Active threads: 5 | Queue: 10
+[12.247s] [INFO]  [Status] Msgs: 10000 @ 864/s | Rate: 1.71 Mbps | Latency: 0.344 ms | Active threads: 7 | Queue: 12
+[13.248s] [INFO]  [Status] Msgs: 11000 @ 869/s | Rate: 1.72 Mbps | Latency: 0.339 ms | Active threads: 6 | Queue: 9
+[14.249s] [INFO]  [Status] Msgs: 12000 @ 872/s | Rate: 1.73 Mbps | Latency: 0.347 ms | Active threads: 7 | Queue: 13
+[15.230s] [INFO]  HIGH PRIORITY MESSAGE #14968 processing time: 0.322 ms
+[15.250s] [INFO]  [Status] Msgs: 13000 @ 858/s | Rate: 1.70 Mbps | Latency: 0.342 ms | Active threads: 8 | Queue: 14
+[16.251s] [INFO]  [Status] Msgs: 14000 @ 861/s | Rate: 1.71 Mbps | Latency: 0.350 ms | Active threads: 6 | Queue: 11
+[17.252s] [INFO]  [Status] Msgs: 15000 @ 854/s | Rate: 1.69 Mbps | Latency: 0.346 ms | Active threads: 7 | Queue: 13
+[18.253s] [INFO]  [Status] Msgs: 16000 @ 757/s | Rate: 1.50 Mbps | Latency: 0.353 ms | Active threads: 6 | Queue: 10
+[19.254s] [INFO]  [Status] Msgs: 17000 @ 760/s | Rate: 1.51 Mbps | Latency: 0.338 ms | Active threads: 8 | Queue: 12
+[20.255s] [INFO]  [Status] Msgs: 18000 @ 758/s | Rate: 1.50 Mbps | Latency: 0.344 ms | Active threads: 5 | Queue: 9
+[21.256s] [INFO]  [Status] Msgs: 19000 @ 762/s | Rate: 1.51 Mbps | Latency: 0.339 ms | Active threads: 7 | Queue: 13
+[22.257s] [INFO]  [Status] Msgs: 20000 @ 866/s | Rate: 1.72 Mbps | Latency: 0.351 ms | Active threads: 6 | Queue: 11
+[23.258s] [INFO]  [Status] Msgs: 21000 @ 871/s | Rate: 1.73 Mbps | Latency: 0.347 ms | Active threads: 8 | Queue: 14
+[24.259s] [INFO]  [Status] Msgs: 22000 @ 873/s | Rate: 1.73 Mbps | Latency: 0.342 ms | Active threads: 7 | Queue: 12
+[25.260s] [INFO]  [Status] Msgs: 23000 @ 859/s | Rate: 1.70 Mbps | Latency: 0.348 ms | Active threads: 6 | Queue: 10
+[26.261s] [INFO]  [Status] Msgs: 24000 @ 863/s | Rate: 1.71 Mbps | Latency: 0.344 ms | Active threads: 8 | Queue: 13
+[27.262s] [INFO]  [Status] Msgs: 25000 @ 856/s | Rate: 1.70 Mbps | Latency: 0.352 ms | Active threads: 5 | Queue: 9
+[27.981s] [INFO]  EMERGENCY MESSAGE #27681 processing time: 0.315 ms
+[27.981s] [INFO]  Sent ACK for EMERGENCY message #27681
+[27.982s] [INFO]  Published EMERGENCY message to ROS: #27681
+[28.263s] [INFO]  [Status] Msgs: 26000 @ 761/s | Rate: 1.51 Mbps | Latency: 0.338 ms | Active threads: 7 | Queue: 12
+[29.264s] [INFO]  [Status] Msgs: 27000 @ 759/s | Rate: 1.50 Mbps | Latency: 0.346 ms | Active threads: 6 | Queue: 10
+[30.265s] [INFO]  [Status] Msgs: 28000 @ 763/s | Rate: 1.51 Mbps | Latency: 0.341 ms | Active threads: 8 | Queue: 13
+[31.266s] [INFO]  [Status] Msgs: 29000 @ 868/s | Rate: 1.72 Mbps | Latency: 0.349 ms | Active threads: 7 | Queue: 11
+[32.267s] [INFO]  [Status] Msgs: 30000 @ 871/s | Rate: 1.73 Mbps | Latency: 0.343 ms | Active threads: 6 | Queue: 10
+[33.268s] [INFO]  [Status] Msgs: 31000 @ 874/s | Rate: 1.73 Mbps | Latency: 0.350 ms | Active threads: 7 | Queue: 12
+[34.269s] [INFO]  [Status] Msgs: 32000 @ 857/s | Rate: 1.70 Mbps | Latency: 0.345 ms | Active threads: 8 | Queue: 14
+[35.270s] [INFO]  [Status] Msgs: 33000 @ 762/s | Rate: 1.51 Mbps | Latency: 0.342 ms | Active threads: 6 | Queue: 11
+[35.872s] [INFO]  HIGH PRIORITY MESSAGE #33584 processing time: 0.328 ms
+[36.271s] [INFO]  [Status] Msgs: 34000 @ 760/s | Rate: 1.51 Mbps | Latency: 0.348 ms | Active threads: 7 | Queue: 13
+[37.272s] [INFO]  [Status] Msgs: 35000 @ 758/s | Rate: 1.50 Mbps | Latency: 0.344 ms | Active threads: 5 | Queue: 9
+[38.273s] [INFO]  [Status] Msgs: 36000 @ 764/s | Rate: 1.51 Mbps | Latency: 0.339 ms | Active threads: 8 | Queue: 12
+[39.274s] [INFO]  [Status] Msgs: 37000 @ 865/s | Rate: 1.72 Mbps | Latency: 0.347 ms | Active threads: 6 | Queue: 10
+[40.275s] [INFO]  [Status] Msgs: 38000 @ 869/s | Rate: 1.72 Mbps | Latency: 0.352 ms | Active threads: 7 | Queue: 13
+[41.276s] [INFO]  [Status] Msgs: 39000 @ 873/s | Rate: 1.73 Mbps | Latency: 0.346 ms | Active threads: 8 | Queue: 14
+[42.277s] [INFO]  [Status] Msgs: 40000 @ 862/s | Rate: 1.71 Mbps | Latency: 0.341 ms | Active threads: 6 | Queue: 11
+[43.278s] [INFO]  [Status] Msgs: 41000 @ 858/s | Rate: 1.70 Mbps | Latency: 0.349 ms | Active threads: 7 | Queue: 12
+[44.279s] [INFO]  [Status] Msgs: 42000 @ 854/s | Rate: 1.69 Mbps | Latency: 0.344 ms | Active threads: 5 | Queue: 9
+[45.280s] [INFO]  [Status] Msgs: 43000 @ 761/s | Rate: 1.51 Mbps | Latency: 0.338 ms | Active threads: 8 | Queue: 13
+[46.281s] [INFO]  [Status] Msgs: 44000 @ 758/s | Rate: 1.50 Mbps | Latency: 0.346 ms | Active threads: 6 | Queue: 10
+[47.282s] [INFO]  [Status] Msgs: 45000 @ 763/s | Rate: 1.51 Mbps | Latency: 0.341 ms | Active threads: 7 | Queue: 12
+[48.283s] [INFO]  [Status] Msgs: 46000 @ 866/s | Rate: 1.72 Mbps | Latency: 0.347 ms | Active threads: 8 | Queue: 14
+[49.284s] [INFO]  [Status] Msgs: 47000 @ 870/s | Rate: 1.72 Mbps | Latency: 0.343 ms | Active threads: 6 | Queue: 11
+[49.532s] [INFO]  EMERGENCY MESSAGE #49246 processing time: 0.312 ms
+[49.532s] [INFO]  Sent ACK for EMERGENCY message #49246
+[49.533s] [INFO]  Published EMERGENCY message to ROS: #49246
+[50.285s] [INFO]  [Status] Msgs: 48000 @ 872/s | Rate: 1.73 Mbps | Latency: 0.350 ms | Active threads: 7 | Queue: 13
+[51.725s] [INFO]  [Status] Msgs: 49000 @ 854/s | Rate: 1.69 Mbps | Latency: 0.346 ms | Active threads: 6 | Queue: 10
+[52.968s] [INFO]  [Status] Msgs: 50000 @ 841/s | Rate: 1.67 Mbps | Latency: 0.348 ms | Active threads: 7 | Queue: 11
+
+===== NETWORK STATISTICS =====
+Messages received: 50000
+Total bytes received: 12800000
+Messages per second: 844.7
+Data rate: 1.68 Mbps
+ACKs sent: 43296 (865920 bytes)
+Message priorities: Emergency: 18 | High: 76 | Normal: 49906
+Per-Stream Statistics:
+  Stream 0: Received 1216, ACKs sent 1216
+  Stream 1: Received 1262, ACKs sent 1262
+  Stream 2: Received 20909, ACKs sent 20909
+  Stream 3: Received 20909, ACKs sent 20909
+Server processing time (min/avg/max): 0.308 / 0.344 / 0.461 ms
+Average jitter: 0.019 ms
+Thread pool: 12 threads, 7 active, 11 queued
+Running time: 59.1 seconds
+=============================
