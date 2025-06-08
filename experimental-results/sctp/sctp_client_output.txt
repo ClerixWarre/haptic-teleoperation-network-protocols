@@ -1,0 +1,43 @@
+[0.000s] [INFO]  Starting SCTP Haptic Data Client...
+[0.005s] [INFO]  Using server address: 192.168.0.165
+[0.042s] [INFO]  ROS2 initialized for real-time data
+[0.043s] [INFO]  ROS2 spin thread started
+[0.045s] [INFO]  Initializing SCTP...
+[0.047s] [INFO]  SCTP initialized successfully
+[0.047s] [INFO]  Connecting to SCTP server...
+[1.247s] [INFO]  Connected to SCTP server
+[1.248s] [INFO]  Starting real-time data thread with multi-stream approach
+[1.248s] [INFO]  Read thread started
+[5.254s] [INFO]  [Status] Msgs: 4000 @ 997/s | Success: 97.6% | Latency: 4.832 ms
+[7.312s] [INFO]  Sent EMERGENCY message #7194 on stream 0
+[10.259s] [INFO]  [Status] Msgs: 9000 @ 998/s | Success: 98.2% | Latency: 5.167 ms
+[15.264s] [INFO]  [Status] Msgs: 14000 @ 996/s | Success: 97.5% | Latency: 4.753 ms
+[16.517s] [INFO]  Sent HIGH PRIORITY message #16423 on stream 1
+[20.269s] [INFO]  [Status] Msgs: 19000 @ 997/s | Success: 98.4% | Latency: 5.249 ms
+[25.274s] [INFO]  [Status] Msgs: 24000 @ 998/s | Success: 97.7% | Latency: 4.824 ms
+[28.438s] [INFO]  Sent EMERGENCY message #28345 on stream 0
+[30.279s] [INFO]  [Status] Msgs: 29000 @ 996/s | Success: 98.1% | Latency: 6.137 ms
+[35.284s] [INFO]  [Status] Msgs: 34000 @ 997/s | Success: 97.4% | Latency: 5.713 ms
+[37.641s] [INFO]  Sent HIGH PRIORITY message #37540 on stream 1
+[40.289s] [INFO]  [Status] Msgs: 39000 @ 998/s | Success: 98.3% | Latency: 4.615 ms
+[45.294s] [INFO]  [Status] Msgs: 44000 @ 997/s | Success: 97.9% | Latency: 5.342 ms
+[46.789s] [INFO]  Sent EMERGENCY message #46691 on stream 0
+[50.299s] [INFO]  [Status] Msgs: 49000 @ 996/s | Success: 98.0% | Latency: 5.912 ms
+
+===== NETWORK METRICS =====
+Messages sent: 49900
+Messages received: 48684
+Messages lost: 1216 (2.44%)
+Total data sent: 12774400 bytes
+Total data received: 779744 bytes
+Throughput: 1.98 Mbps
+
+Per-Stream Statistics:
+  Stream 0: Sent 12550, Received 12237 (Success: 97.5%)
+  Stream 1: Sent 12450, Received 12145 (Success: 97.6%)
+  Stream 2: Sent 12450, Received 12183 (Success: 97.9%)
+  Stream 3: Sent 12450, Received 12119 (Success: 97.3%)
+Latency (min/avg/max): 4.412 / 5.231 / 6.978 ms
+Average jitter: 0.683 ms
+Current message rate: 997 Hz
+===========================

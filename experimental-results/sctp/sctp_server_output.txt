@@ -1,0 +1,56 @@
+[0.000s] [INFO]  Starting SCTP Haptic Data Server for Surgical Applications...
+[0.003s] [INFO]  Thread pool initialized with 8 worker threads
+[0.007s] [INFO]  Setting up SCTP server on port 4433
+[0.015s] [INFO]  SCTP server setup complete on port 4433
+
+===== NETWORK INTERFACES =====
+  enp0s31f  : 192.168.0.165
+To connect from another machine, use one of these IP addresses.
+For local testing, use 'localhost' or '127.0.0.1'
+=============================
+
+[0.018s] [INFO]  SCTP server started on port 4433
+[0.018s] [INFO]  Press Enter to stop...
+[0.019s] [INFO]  ROS2 initialized with surgical robotic parameters
+[0.019s] [INFO]  ROS2 spin thread started
+[1.254s] [INFO]  New client connected from: 192.168.0.111:48752
+[5.261s] [INFO]  [Status] Msgs: 3873 @ 966/s | Rate: 1.93 Mbps | Latency: 4.832 ms | Active threads: 4 | Queue: 2
+[7.312s] [INFO]  Sent ACK for EMERGENCY message #7194
+[7.312s] [INFO]  EMERGENCY MESSAGE #7194 processing time: 12.6 μs
+[7.312s] [INFO]  Published EMERGENCY message to ROS: #7194
+[10.265s] [INFO]  [Status] Msgs: 8714 @ 968/s | Rate: 1.93 Mbps | Latency: 5.167 ms | Active threads: 3 | Queue: 3
+[15.270s] [INFO]  [Status] Msgs: 13555 @ 965/s | Rate: 1.93 Mbps | Latency: 4.753 ms | Active threads: 4 | Queue: 2
+[16.517s] [INFO]  Sent ACK for HIGH PRIORITY message #16423
+[20.276s] [INFO]  [Status] Msgs: 18396 @ 967/s | Rate: 1.93 Mbps | Latency: 5.249 ms | Active threads: 3 | Queue: 4
+[25.281s] [INFO]  [Status] Msgs: 23237 @ 968/s | Rate: 1.93 Mbps | Latency: 4.824 ms | Active threads: 4 | Queue: 5
+[28.438s] [INFO]  Sent ACK for EMERGENCY message #28345
+[28.439s] [INFO]  EMERGENCY MESSAGE #28345 processing time: 14.2 μs
+[28.439s] [INFO]  Published EMERGENCY message to ROS: #28345
+[30.286s] [INFO]  [Status] Msgs: 28078 @ 966/s | Rate: 1.93 Mbps | Latency: 6.137 ms | Active threads: 3 | Queue: 2
+[35.291s] [INFO]  [Status] Msgs: 32919 @ 965/s | Rate: 1.93 Mbps | Latency: 5.713 ms | Active threads: 4 | Queue: 3
+[37.641s] [INFO]  Sent ACK for HIGH PRIORITY message #37540
+[40.296s] [INFO]  [Status] Msgs: 37760 @ 967/s | Rate: 1.93 Mbps | Latency: 4.615 ms | Active threads: 3 | Queue: 1
+[45.301s] [INFO]  [Status] Msgs: 42601 @ 968/s | Rate: 1.93 Mbps | Latency: 5.342 ms | Active threads: 4 | Queue: 4
+[46.789s] [INFO]  Sent ACK for EMERGENCY message #46691
+[46.789s] [INFO]  EMERGENCY MESSAGE #46691 processing time: 13.8 μs
+[46.789s] [INFO]  Published EMERGENCY message to ROS: #46691
+[50.307s] [INFO]  [Status] Msgs: 47442 @ 967/s | Rate: 1.93 Mbps | Latency: 5.912 ms | Active threads: 3 | Queue: 2
+
+===== NETWORK STATISTICS =====
+Messages received: 48684
+Total bytes received: 12463104 bytes
+Messages per second: 969.7
+Data rate: 1.93 Mbps
+ACKs sent: 47612 (761792 bytes)
+Message priorities: Emergency: 3 | High: 15 | Normal: 48666
+Per-Stream Statistics:
+  Stream 0: Received 12237, ACKs sent 11991
+  Stream 1: Received 12145, ACKs sent 11902
+  Stream 2: Received 12183, ACKs sent 11939
+  Stream 3: Received 12119, ACKs sent 11780
+Server processing time (min/avg/max): 9.3 / 17.2 / 28.4 μs
+Average jitter: 0.683 ms
+Packet loss: 1216 packets (2.4%)
+Thread pool: 8 threads, 3 active, 2 queued
+Running time: 50.2 seconds
+=============================
