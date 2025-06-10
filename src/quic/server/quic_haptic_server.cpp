@@ -223,36 +223,116 @@ public:
 const size_t THREAD_POOL_SIZE = std::max(4u, std::thread::hardware_concurrency());
 std::unique_ptr<ThreadPool> g_thread_pool;
 
-// Add these declarations at global scope (outside of any function)
-// Pooled memory approach for emergency ACK buffers
+// Pooled memory approach for emergency ACK buffers - Updated with reference counting
 constexpr size_t EMERGENCY_ACK_POOL_SIZE = 64;
 struct EmergencyAckBuffer {
     uint8_t buffer[128];  // Buffer for ACK data
     QUIC_BUFFER quicBuffer;
     QUIC_SEND_FLAGS sendFlags;
-    bool inUse = false;
+    std::atomic<int> ref_count{1};  // Reference counting for safety
+    std::atomic<bool> in_use{false};
+    uint64_t message_id;  // For debugging
+    
+    // Safe reference management
+    void add_ref() {
+        ref_count.fetch_add(1, std::memory_order_relaxed);
+    }
+    
+    bool release() {
+        int old_count = ref_count.fetch_sub(1, std::memory_order_acq_rel);
+        if (old_count == 1) {
+            // Last reference, safe to mark as free
+            in_use.store(false, std::memory_order_release);
+            return true;  // Buffer was freed
+        }
+        return false;  // Still has references
+    }
 };
 
 EmergencyAckBuffer g_emergencyAckPool[EMERGENCY_ACK_POOL_SIZE];
 std::mutex g_emergencyAckMutex;
 
-// Function to allocate a buffer from the emergency pool
-EmergencyAckBuffer* allocateEmergencyAckBuffer() {
+// Debug helper function
+void debugEmergencyBuffer(const char* action, EmergencyAckBuffer* buf) {
+    if (!buf) {
+        logError("DEBUG: " + std::string(action) + " - NULL buffer!");
+        return;
+    }
+    
+    // Check if buffer is in our pool
+    bool isPoolBuffer = false;
+    int poolIndex = -1;
+    for (int i = 0; i < EMERGENCY_ACK_POOL_SIZE; i++) {
+        if (&g_emergencyAckPool[i] == buf) {
+            isPoolBuffer = true;
+            poolIndex = i;
+            break;
+        }
+    }
+    
+    logInfo("DEBUG: " + std::string(action) + " - Buffer " + std::to_string((uintptr_t)buf) + 
+           " (pool_index=" + std::to_string(poolIndex) + ", is_pool=" + (isPoolBuffer ? "yes" : "no") + 
+           ", ref_count=" + std::to_string(buf->ref_count.load()) + 
+           ", in_use=" + (buf->in_use.load() ? "yes" : "no") + 
+           ", msg_id=" + std::to_string(buf->message_id) + ")");
+}
+
+// Function to allocate a buffer from the emergency pool with debug output
+EmergencyAckBuffer* allocateEmergencyAckBuffer(uint64_t message_id) {
     std::lock_guard<std::mutex> lock(g_emergencyAckMutex);
-    for (auto& buf : g_emergencyAckPool) {
-        if (!buf.inUse) {
-            buf.inUse = true;
+    
+    logDebug("DEBUG: Looking for emergency buffer for message #" + std::to_string(message_id));
+    
+    for (int i = 0; i < EMERGENCY_ACK_POOL_SIZE; i++) {
+        auto& buf = g_emergencyAckPool[i];
+        bool expected = false;
+        if (buf.in_use.compare_exchange_weak(expected, true, std::memory_order_acquire)) {
+            buf.ref_count.store(1, std::memory_order_relaxed);
+            buf.message_id = message_id;
             buf.quicBuffer.Buffer = buf.buffer;
+            buf.quicBuffer.Length = 0; // Will be set later
+            
+            debugEmergencyBuffer("ALLOCATED", &buf);
             return &buf;
         }
     }
-    return nullptr; // pool exhausted
+    
+    logError("DEBUG: Emergency buffer pool exhausted for message #" + std::to_string(message_id));
+    return nullptr;
 }
 
-// Function to release a buffer back to the pool
+// Function to release a buffer back to the pool with debug output
 void releaseEmergencyAckBuffer(EmergencyAckBuffer* buf) {
-    std::lock_guard<std::mutex> lock(g_emergencyAckMutex);
-    buf->inUse = false;
+    if (!buf) {
+        logError("DEBUG: Attempted to release NULL emergency buffer");
+        return;
+    }
+    
+    debugEmergencyBuffer("RELEASE_START", buf);
+    
+    // Verify this is actually from our pool
+    bool is_pool_buffer = false;
+    for (int i = 0; i < EMERGENCY_ACK_POOL_SIZE; i++) {
+        if (&g_emergencyAckPool[i] == buf) {
+            is_pool_buffer = true;
+            break;
+        }
+    }
+    
+    if (!is_pool_buffer) {
+        logError("DEBUG: Attempted to release buffer not from emergency pool! Address: " + 
+                std::to_string((uintptr_t)buf));
+        return;
+    }
+    
+    if (buf->release()) {
+        debugEmergencyBuffer("RELEASE_FREED", buf);
+        logInfo("DEBUG: Emergency buffer released and freed for message #" + std::to_string(buf->message_id));
+    } else {
+        debugEmergencyBuffer("RELEASE_STILLREF", buf);
+        logDebug("DEBUG: Emergency buffer released but still has references for message #" + 
+                std::to_string(buf->message_id));
+    }
 }
 
 // Define haptic message structure for validation
@@ -458,116 +538,6 @@ struct HapticMessage {
     }
 };
 
-// Function to analyze client protocol (optional verbose output)
-void analyzeClientProtocol(const uint8_t* buffer, uint32_t length) {
-    if (!g_logConfig.enableProtocolAnalysis) {
-        return; // Skip if protocol analysis is disabled
-    }
-    
-    std::stringstream ss;
-    ss << "Client Protocol Analysis:" << std::endl;
-    
-    // Check for different protocol possibilities
-    
-    // 1. Check if it could be a string message
-    bool couldBeString = true;
-    for (uint32_t i = 0; i < length; i++) {
-        // Check if all bytes are printable ASCII or null terminator
-        if (!(buffer[i] == 0 || (buffer[i] >= 32 && buffer[i] <= 126))) {
-            couldBeString = false;
-            break;
-        }
-    }
-    
-    if (couldBeString) {
-        ss << "Possible ASCII string message. As string: \"";
-        for (uint32_t i = 0; i < length; i++) {
-            if (buffer[i] >= 32 && buffer[i] <= 126) {
-                ss << static_cast<char>(buffer[i]);
-            } else if (buffer[i] == 0) {
-                ss << "\\0";
-            }
-        }
-        ss << "\"" << std::endl;
-    }
-    
-    // 2. Check if it's a pointer to internal memory structure
-    // Memory addresses often start with values in certain ranges
-    uint64_t possiblePtr = 0;
-    if (length >= 8) {
-        memcpy(&possiblePtr, buffer, sizeof(uint64_t));
-        
-        // Check if it looks like a typical 64-bit memory address
-        // On most x64 systems, valid heap addresses are often between 0x00007f0000000000 and 0x00007fffffffffff
-        if ((possiblePtr & 0xFFFF000000000000) == 0x7F0000000000) {
-            ss << "First 8 bytes (0x" << std::hex << possiblePtr << ") match pattern of x64 heap memory address" << std::endl;
-        }
-        // Process memory often starts with 0x74, 0x55, etc. on some platforms
-        else if ((possiblePtr & 0xFF00000000000000) == 0x7400000000000000 ||
-                 (possiblePtr & 0xFF00000000000000) == 0x5500000000000000) {
-            ss << "First 8 bytes (0x" << std::hex << possiblePtr << ") match pattern of process memory address" << std::endl;
-        }
-    }
-    
-    // 3. Try different binary interpretations
-    if (length >= 8) {
-        // Try as 64-bit integer
-        int64_t int64Value;
-        memcpy(&int64Value, buffer, sizeof(int64_t));
-        ss << "As int64: " << std::dec << int64Value << std::endl;
-        
-        // Try as 32-bit integers
-        if (length >= 8) {
-            int32_t int32Value1, int32Value2;
-            memcpy(&int32Value1, buffer, sizeof(int32_t));
-            memcpy(&int32Value2, buffer + 4, sizeof(int32_t));
-            ss << "As two int32: " << int32Value1 << ", " << int32Value2 << std::endl;
-        }
-        
-        // Try as double
-        if (length >= 8) {
-            double doubleValue;
-            memcpy(&doubleValue, buffer, sizeof(double));
-            ss << "As double: " << doubleValue << std::endl;
-        }
-        
-        // Try as float
-        if (length >= 4) {
-            float floatValue;
-            memcpy(&floatValue, buffer, sizeof(float));
-            ss << "As float: " << floatValue << std::endl;
-        }
-    }
-    
-    logDebug(ss.str());
-}
-
-// Debug helper function to print bytes in hex (optional)
-void dumpHexData(const uint8_t* data, uint32_t length) {
-    if (!g_logConfig.enableDataLogging) {
-        return; // Skip if data logging is disabled
-    }
-    
-    try {
-        if (!data || length == 0) {
-            logDebug("  No data to display");
-            return;
-        }
-        
-        std::stringstream ss;
-        ss << "  HEX: ";
-        for (uint32_t i = 0; i < std::min(length, uint32_t(32)); i++) {
-            ss << std::setw(2) << std::setfill('0') << std::hex << (int)data[i] << " ";
-            if (i % 16 == 15) ss << "\n       ";
-        }
-        if (length > 32) ss << "... (" << std::dec << length << " bytes total)";
-        
-        logDebug(ss.str());
-    } catch (const std::exception& e) {
-        logError("Error in dumpHexData: " + std::string(e.what()));
-    }
-}
-
 // Structure to track ACK batching state for each stream
 struct StreamAckState {
     uint64_t messageCount = 0;
@@ -593,51 +563,6 @@ struct StreamAckState {
         delete messageCounter;
     }
 };
-
-// Inspect data function with verbose output control
-void inspectData(const uint8_t* data, size_t length, const char* label) {
-    if (!g_logConfig.enableDataLogging) {
-        return; // Skip if data logging is disabled
-    }
-    
-    std::stringstream ss;
-    ss << "DATA [" << label << "] (" << length << " bytes): ";
-    
-    // Print first 64 bytes or fewer
-    for (size_t i = 0; i < std::min(length, size_t(64)); i++) {
-        ss << std::setfill('0') << std::setw(2) << std::hex << static_cast<int>(data[i]) << " ";
-        if ((i + 1) % 8 == 0) ss << " ";
-        if ((i + 1) % 16 == 0) ss << "\n" << std::string(label ? strlen(label) + 8 : 8, ' ');
-    }
-    
-    // Add interpretation of first 24 bytes if we have that many
-    if (length >= 24) {
-        ss << "\n\nInterpretation:";
-        
-        // First 8 bytes (sequence number)
-        uint64_t seqNum = 0;
-        memcpy(&seqNum, data, sizeof(uint64_t));
-        ss << "\n  Bytes 0-7: " << std::dec << seqNum << " (sequence number)";
-        
-        // Next 8 bytes (timestamp)
-        uint64_t timestamp = 0;
-        memcpy(&timestamp, data + 8, sizeof(uint64_t));
-        ss << "\n  Bytes 8-15: " << timestamp << " (timestamp)";
-        
-        // Next 12 bytes (3 floats, position)
-        float posX, posY, posZ;
-        memcpy(&posX, data + 16, sizeof(float));
-        memcpy(&posY, data + 20, sizeof(float));
-        if (length >= 24 + sizeof(float)) {
-            memcpy(&posZ, data + 24, sizeof(float));
-            ss << "\n  Position: [" << posX << ", " << posY << ", " << posZ << "]";
-        } else {
-            ss << "\n  Position: [" << posX << ", " << posY << ", (incomplete)]";
-        }
-    }
-    
-    logDebug(ss.str());
-}
 
 // Structure to manage send buffer lifetime on server
 struct SendContext {
@@ -934,7 +859,7 @@ void signalHandler(int signal) {
     }
 }
 
-// Process received haptic data safely with priority handling
+// Process received haptic data safely with priority handling - Updated to skip emergency ROS2 publishing
 void ProcessHapticData(const uint8_t* buffer, uint32_t length, uint64_t globalMsgCount) {
     if (!buffer) {
         logWarning("Warning: Null buffer in ProcessHapticData");
@@ -974,9 +899,6 @@ void ProcessHapticData(const uint8_t* buffer, uint32_t length, uint64_t globalMs
         
         // Make a safe copy of the data
         std::vector<uint8_t> dataCopy(buffer, buffer + length);
-        
-        // Inspect the data for debugging
-        inspectData(dataCopy.data(), dataCopy.size(), "ProcessHapticData");
         
         // Parse the message
         HapticMessage msg;
@@ -1039,7 +961,7 @@ void ProcessHapticData(const uint8_t* buffer, uint32_t length, uint64_t globalMs
                    std::to_string(msg.posY) + ", " + std::to_string(msg.posZ));
         }
         
-        // Publish to ROS if initialized
+        // Publish to ROS if initialized - BUT NOT for emergency messages (they're handled in stream callback)
         if (g_ros_initialized && g_publisher && g_node && rclcpp::ok() && !g_shutdown_requested.load()) {
             try {
                 auto rosMsg = std::make_shared<omni_msgs::msg::OmniState>();
@@ -1069,11 +991,12 @@ void ProcessHapticData(const uint8_t* buffer, uint32_t length, uint64_t globalMs
                 rosMsg->current.y = msg.currY;
                 rosMsg->current.z = msg.currZ;
                 
-                // Publish - prioritize emergency messages
+                // SKIP emergency messages - they're handled in the stream callback
                 if (msg.priority == EMERGENCY) {
-                    // Use a higher QoS for emergency messages
-                    g_publisher->publish(*rosMsg);
-                    logInfo("Published EMERGENCY message to ROS: #" + std::to_string(msg.sequenceNumber));
+                    // Emergency messages are handled separately in ServerStreamCallback
+                    // to avoid race conditions between QUIC and ROS2 threads
+                    logDebug("Skipping ROS2 publish for emergency message #" + 
+                            std::to_string(msg.sequenceNumber) + " (handled in callback)");
                 }
                 else if (msg.priority == HIGH) {
                     g_publisher->publish(*rosMsg);
@@ -1210,7 +1133,7 @@ QUIC_STATUS ServerStreamCallback(HQUIC Stream, void* Context, QUIC_STREAM_EVENT*
 QUIC_STATUS ServerConnectionCallback(HQUIC Connection, void* Context, QUIC_CONNECTION_EVENT* Event);
 QUIC_STATUS ServerListenerCallback(HQUIC Listener, void* Context, QUIC_LISTENER_EVENT* Event);
 
-// Complete updated ServerStreamCallback function
+// Complete updated ServerStreamCallback function with debug emergency handling
 QUIC_STATUS ServerStreamCallback(HQUIC Stream, void* Context, QUIC_STREAM_EVENT* Event) {
     if (!Event) {
         logError("ERROR: Stream event is null");
@@ -1223,17 +1146,17 @@ QUIC_STATUS ServerStreamCallback(HQUIC Stream, void* Context, QUIC_STREAM_EVENT*
 
     case QUIC_STREAM_EVENT_RECEIVE: {
         const auto& recv = Event->RECEIVE;
-
+    
         if (recv.TotalBufferLength == 0) {
             logDebug("FIN received, no data");
             return QUIC_STATUS_SUCCESS;
         }
-
+    
         if (!recv.Buffers || recv.BufferCount == 0) {
             logDebug("Received empty buffer set");
             return QUIC_STATUS_SUCCESS;
         }
-
+    
         // Copy data - use a shared pointer for safe sharing with thread pool
         auto data = std::make_shared<std::vector<uint8_t>>();
         data->reserve(recv.TotalBufferLength);
@@ -1241,13 +1164,13 @@ QUIC_STATUS ServerStreamCallback(HQUIC Stream, void* Context, QUIC_STREAM_EVENT*
             const auto& buf = recv.Buffers[i];
             data->insert(data->end(), buf.Buffer, buf.Buffer + buf.Length);
         }
-
+    
         // Increment the message counter
         uint64_t msgIndex = 0;
         if (streamState && streamState->messageCounter) {
             msgIndex = ++(*streamState->messageCounter);
         }
-
+    
         // Check for priority before queuing
         uint8_t priorityValue = NORMAL;
         if (data->size() >= 71) {  // Check if priority byte exists
@@ -1259,168 +1182,182 @@ QUIC_STATUS ServerStreamCallback(HQUIC Stream, void* Context, QUIC_STREAM_EVENT*
         if (data->size() >= 8) {
             memcpy(&sequenceNumber, data->data(), sizeof(uint64_t));
         }
-
-        // Special handling for emergency messages - process immediately
+    
+        // Process ALL messages (including emergency) in thread pool to avoid callback timing issues
         if (priorityValue == EMERGENCY) {
-            logInfo("Received EMERGENCY message #" + std::to_string(sequenceNumber) + 
-                    " - processing immediately");
-            
-            // Process directly instead of queueing
-            ProcessHapticData(data->data(), static_cast<uint32_t>(data->size()), msgIndex);
-            
-            // Extract timestamp if available
-            uint64_t timestamp = 0;
-            if (data->size() >= 16) {
-                memcpy(&timestamp, data->data() + sizeof(uint64_t), sizeof(uint64_t));
-            }
-            
-            // Update state
-            if (streamState) {
-                streamState->messageCount++;
-                streamState->lastSequence = sequenceNumber;
-                streamState->lastTimestamp = timestamp;
-                streamState->lastPriority = EMERGENCY;
-            }
-            
-            // Get buffer from emergency pool
-            EmergencyAckBuffer* ackBuf = allocateEmergencyAckBuffer();
-            if (!ackBuf) {
-                logError("Emergency ACK pool exhausted! Dropping emergency ACK.");
-                MsQuic->StreamReceiveComplete(Stream, data->size());
-                return QUIC_STATUS_SUCCESS;
-            }
-            
-            // Build the ACK (sequenceNumber + timestamp) in the buffer
-            memcpy(ackBuf->buffer, &sequenceNumber, sizeof(uint64_t));
-            memcpy(ackBuf->buffer + sizeof(uint64_t), &timestamp, sizeof(uint64_t));
-            ackBuf->quicBuffer.Length = 16; // 16 bytes (two uint64_t values)
-            ackBuf->sendFlags = QUIC_SEND_FLAG_NONE;
-            
-            // Send the ACK using MsQuic with pool buffer as context
-            QUIC_STATUS status = MsQuic->StreamSend(
-                Stream,
-                &ackBuf->quicBuffer,
-                1,
-                ackBuf->sendFlags,
-                ackBuf); // Pass the buffer itself as context
-                
-            if (QUIC_FAILED(status)) {
-                logError("Failed to send emergency ACK: 0x" + std::to_string(status));
-                // If send failed, release the buffer back to the pool
-                releaseEmergencyAckBuffer(ackBuf);
-            } else {
-                logInfo("Sent immediate ACK for EMERGENCY message #" + std::to_string(sequenceNumber));
-                // Buffer will be released in the SEND_COMPLETE handler
-            }
-            
-            MsQuic->StreamReceiveComplete(Stream, data->size());
-            return QUIC_STATUS_SUCCESS;
+            logInfo("DEBUG: Queueing emergency message #" + std::to_string(sequenceNumber) + " for thread pool processing");
         }
         
-        // For high priority and normal messages, use thread pool
         g_stats.tasksQueued++;
         g_thread_pool->enqueue([Stream, data, msgIndex, streamState, priorityValue, sequenceNumber]() {
             g_stats.tasksProcessed++;
             
+            HapticMessagePriority priority = static_cast<HapticMessagePriority>(priorityValue);
+            
+            if (priority == EMERGENCY) {
+                logInfo("DEBUG: Starting emergency message processing in thread pool for #" + std::to_string(sequenceNumber));
+            }
+            
             // Process the message
             ProcessHapticData(data->data(), static_cast<uint32_t>(data->size()), msgIndex);
-
-            // Extract sequence number and timestamp from the original message
+    
+            // Extract timestamp
             uint64_t timestamp = 0;
             if (data->size() >= 16) {
                 memcpy(&timestamp, data->data() + sizeof(uint64_t), sizeof(uint64_t));
             }
-
-            // Update ACK tracking state and determine if we should ACK
-            bool shouldSendAck = false;
-            HapticMessagePriority priority = static_cast<HapticMessagePriority>(priorityValue);
-            
+    
+            // Update ACK tracking state
             if (streamState) {
                 streamState->messageCount++;
                 streamState->lastSequence = sequenceNumber;
                 streamState->lastTimestamp = timestamp;
                 streamState->lastPriority = priority;
+            }
+    
+            // Handle emergency ACKs
+            if (priority == EMERGENCY) {
+                logInfo("DEBUG: Processing emergency ACK for message #" + std::to_string(sequenceNumber));
                 
-                // Determine ACK strategy based on priority and configuration
+                // Get buffer from emergency pool
+                EmergencyAckBuffer* ackBuf = allocateEmergencyAckBuffer(sequenceNumber);
+                if (!ackBuf) {
+                    logError("DEBUG: Emergency ACK pool exhausted! Dropping emergency ACK for #" + 
+                            std::to_string(sequenceNumber));
+                    MsQuic->StreamReceiveComplete(Stream, data->size());
+                    return;
+                }
+                
+                debugEmergencyBuffer("BEFORE_SEND", ackBuf);
+                
+                // Build the ACK safely
+                memcpy(ackBuf->buffer, &sequenceNumber, sizeof(uint64_t));
+                memcpy(ackBuf->buffer + sizeof(uint64_t), &timestamp, sizeof(uint64_t));
+                ackBuf->quicBuffer.Length = 16;
+                ackBuf->sendFlags = QUIC_SEND_FLAG_NONE;
+                
+                logInfo("DEBUG: About to call MsQuic->StreamSend for emergency message #" + 
+                        std::to_string(sequenceNumber));
+                
+                // Send the ACK
+                QUIC_STATUS status = MsQuic->StreamSend(
+                    Stream,
+                    &ackBuf->quicBuffer,
+                    1,
+                    ackBuf->sendFlags,
+                    ackBuf); // Pass buffer as context
+                    
+                if (QUIC_FAILED(status)) {
+                    logError("DEBUG: StreamSend FAILED for emergency message #" + 
+                            std::to_string(sequenceNumber) + " with status 0x" + std::to_string(status));
+                    debugEmergencyBuffer("SEND_FAILED", ackBuf);
+                    // Release the buffer since MsQuic won't call SEND_COMPLETE
+                    releaseEmergencyAckBuffer(ackBuf);
+                } else {
+                    logInfo("DEBUG: StreamSend SUCCESS for emergency message #" + 
+                            std::to_string(sequenceNumber) + " - waiting for SEND_COMPLETE");
+                    debugEmergencyBuffer("SEND_SUCCESS", ackBuf);
+                }
+                
+                logInfo("Emergency message #" + std::to_string(sequenceNumber) + " acknowledged (network ACK only)");
+            }
+            else {
+                // Handle normal/high priority ACKs
+                bool shouldSendAck = false;
+                
                 if (priority == HIGH) {
                     // Always ACK high priority messages
                     shouldSendAck = true;
                 } else {
                     // For normal messages, use the configured interval
-                    shouldSendAck = (streamState->messageCount % streamState->ACK_INTERVAL == 0) || 
+                    shouldSendAck = (streamState && (streamState->messageCount % streamState->ACK_INTERVAL == 0)) || 
                                     (sequenceNumber % 1000 == 0); // Always ACK milestone sequences
                 }
-            } else {
-                // If no state, always ACK (fallback)
-                shouldSendAck = true;
-            }
-
-            // Send ACK if needed
-            if (shouldSendAck) {
-                // Create an ACK message with shared ownership
-                std::shared_ptr<std::vector<uint8_t>> responseBuffer = 
-                    std::make_shared<std::vector<uint8_t>>(16);
-                memcpy(responseBuffer->data(), &sequenceNumber, sizeof(uint64_t));
-                memcpy(responseBuffer->data() + sizeof(uint64_t), &timestamp, sizeof(uint64_t));
-
-                auto* ctx = new SendContext(*responseBuffer, sequenceNumber, priority);
-                // Use unique_ptr for automatic cleanup if send fails
-                std::unique_ptr<SendContext> safeCtx(ctx);
-
-                QUIC_STATUS status = MsQuic->StreamSend(
-                    Stream,
-                    &ctx->quicBuffer,
-                    1,
-                    QUIC_SEND_FLAG_NONE,
-                    ctx);
-
-                if (QUIC_FAILED(status)) {
-                    logError("Failed to send response: 0x" + std::to_string(status));
-                    // ctx will be deleted by the unique_ptr
-                } else {
-                    if (priority == HIGH) {
-                        if (msgIndex % 100 == 0) {  // Log occasionally
-                            logDebug("Sent response for HIGH PRIORITY message #" + std::to_string(msgIndex));
+    
+                // Send ACK if needed
+                if (shouldSendAck) {
+                    // Create an ACK message with shared ownership
+                    std::shared_ptr<std::vector<uint8_t>> responseBuffer = 
+                        std::make_shared<std::vector<uint8_t>>(16);
+                    memcpy(responseBuffer->data(), &sequenceNumber, sizeof(uint64_t));
+                    memcpy(responseBuffer->data() + sizeof(uint64_t), &timestamp, sizeof(uint64_t));
+    
+                    auto* ctx = new SendContext(*responseBuffer, sequenceNumber, priority);
+                    // Use unique_ptr for automatic cleanup if send fails
+                    std::unique_ptr<SendContext> safeCtx(ctx);
+    
+                    QUIC_STATUS status = MsQuic->StreamSend(
+                        Stream,
+                        &ctx->quicBuffer,
+                        1,
+                        QUIC_SEND_FLAG_NONE,
+                        ctx);
+    
+                    if (QUIC_FAILED(status)) {
+                        logError("Failed to send response: 0x" + std::to_string(status));
+                        // ctx will be deleted by the unique_ptr
+                    } else {
+                        if (priority == HIGH) {
+                            if (msgIndex % 100 == 0) {  // Log occasionally
+                                logDebug("Sent response for HIGH PRIORITY message #" + std::to_string(msgIndex));
+                            }
+                        } else if (msgIndex % 1000 == 0) {  // Log less frequently for normal messages
+                            logDebug("Sent response for message #" + std::to_string(msgIndex));
                         }
-                    } else if (msgIndex % 1000 == 0) {  // Log less frequently for normal messages
-                        logDebug("Sent response for message #" + std::to_string(msgIndex));
+                        // Release ownership - MsQuic will handle cleanup via SEND_COMPLETE event
+                        safeCtx.release();
                     }
-                    // Release ownership - MsQuic will handle cleanup via SEND_COMPLETE event
-                    safeCtx.release();
                 }
             }
-
+    
+            // Complete the receive for all message types
             MsQuic->StreamReceiveComplete(Stream, data->size());
+            
+            if (priority == EMERGENCY) {
+                logInfo("DEBUG: Emergency message thread pool processing completed for #" + std::to_string(sequenceNumber));
+            }
         });
-
+    
         return QUIC_STATUS_PENDING;
     }
 
     case QUIC_STREAM_EVENT_SEND_COMPLETE: {
+        logDebug("DEBUG: SEND_COMPLETE event received");
+        
         if (Event->SEND_COMPLETE.ClientContext) {
             void* ctxPtr = Event->SEND_COMPLETE.ClientContext;
             
-            // Check if context belongs to emergency ACK pool
-            EmergencyAckBuffer* emergencyBuf = reinterpret_cast<EmergencyAckBuffer*>(ctxPtr);
-            bool isEmergencyBuffer = false;
+            logDebug("DEBUG: SEND_COMPLETE with context " + std::to_string((uintptr_t)ctxPtr));
             
-            // Check if the pointer is in our emergency buffer pool range
-            for (auto& buf : g_emergencyAckPool) {
-                if (&buf == emergencyBuf) {
-                    // Found match - this is from our emergency pool
-                    releaseEmergencyAckBuffer(emergencyBuf);
+            // Check if this is an emergency buffer
+            bool isEmergencyBuffer = false;
+            for (int i = 0; i < EMERGENCY_ACK_POOL_SIZE; i++) {
+                if (&g_emergencyAckPool[i] == static_cast<EmergencyAckBuffer*>(ctxPtr)) {
                     isEmergencyBuffer = true;
                     break;
                 }
             }
             
-            // If not an emergency buffer, must be a normal SendContext
-            if (!isEmergencyBuffer) {
-                // Normal message ACK completed - free the allocated SendContext
+            if (isEmergencyBuffer) {
+                EmergencyAckBuffer* emergencyBuf = static_cast<EmergencyAckBuffer*>(ctxPtr);
+                logInfo("DEBUG: SEND_COMPLETE for emergency buffer, message #" + 
+                       std::to_string(emergencyBuf->message_id));
+                debugEmergencyBuffer("SEND_COMPLETE", emergencyBuf);
+                
+                logInfo("DEBUG: About to call releaseEmergencyAckBuffer");
+                releaseEmergencyAckBuffer(emergencyBuf);
+                logInfo("DEBUG: releaseEmergencyAckBuffer completed");
+            } else {
+                logDebug("DEBUG: SEND_COMPLETE for normal buffer");
+                // Normal message ACK completed
                 SendContext* ctx = static_cast<SendContext*>(ctxPtr);
                 delete ctx;
             }
+        } else {
+            logDebug("DEBUG: SEND_COMPLETE with NULL context");
         }
+        
+        logDebug("DEBUG: SEND_COMPLETE event handling completed");
         return QUIC_STATUS_SUCCESS;
     }
 
@@ -1695,26 +1632,6 @@ void parseCommandLineArgs(int argc, char* argv[]) {
             g_logConfig.enableProtocolAnalysis = true;
             logInfo("Protocol analysis enabled");
         }
-        else if (arg.find("--ack-interval=") == 0) {
-            std::string value = arg.substr(14);
-            try {
-                int interval = std::stoi(value);
-                // Will be applied to new streams in the StreamAckState constructor
-                logInfo("ACK interval set to " + value + " messages");
-            } catch (...) {
-                logWarning("Invalid ACK interval: " + value);
-            }
-        }
-        else if (arg.find("--threads=") == 0) {
-            std::string value = arg.substr(10);
-            try {
-                int threads = std::stoi(value);
-                // Will be used when initializing thread pool
-                logInfo("Thread pool size set to " + value + " threads");
-            } catch (...) {
-                logWarning("Invalid thread count: " + value);
-            }
-        }
     }
 }
 
@@ -1810,8 +1727,6 @@ int main(int argc, char* argv[]) {
                       << "  --random-delay         Randomize the processing delay\n"
                       << "  --enable-data-logging  Enable detailed data logging\n"
                       << "  --enable-protocol-analysis  Enable protocol analysis\n"
-                      << "  --ack-interval=N       ACK every N messages (default: 1 for surgical apps)\n"
-                      << "  --threads=N            Set thread pool size (default: CPU cores)\n"
                       << "  --help, -h             Show this help message\n";
             return 0;
         }
