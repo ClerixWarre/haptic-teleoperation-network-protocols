@@ -438,17 +438,49 @@ void omniStateCallback(const std::shared_ptr<const omni_msgs::msg::OmniState> ms
         // Determine message priority based on haptic data
         // For surgical applications, detect emergency conditions
         // Example: if forces exceed threshold, mark as emergency
-        float forceThreshold = 20.0f; // Example threshold
+        // Emergency detection configuration - adjust these values as needed
+        const float FORCE_THRESHOLD = 30.0f;           // Increased from 20.0f
+        const float HIGH_PRIORITY_RATIO = 0.7f;        // High priority at 70% of emergency
+        const bool USE_LOCKED_AS_EMERGENCY = false;    // Disabled locked emergency
+        const bool USE_VELOCITY_CHECK = false;         // Optional: enable velocity checking
+        const float VELOCITY_THRESHOLD = 100.0f;       // Only used if USE_VELOCITY_CHECK is true
+
+        // Calculate force magnitude
         float force = std::sqrt(
             msg->current.x * msg->current.x + 
             msg->current.y * msg->current.y + 
             msg->current.z * msg->current.z);
-            
-        if (force > forceThreshold || msg->locked) {
-            message.priority = EMERGENCY;
+
+        // Optional: Calculate velocity magnitude
+        float velocity = 0.0f;
+        if (USE_VELOCITY_CHECK) {
+            velocity = std::sqrt(
+                msg->velocity.x * msg->velocity.x + 
+                msg->velocity.y * msg->velocity.y + 
+                msg->velocity.z * msg->velocity.z);
         }
-        else if (force > forceThreshold * 0.7) {
+
+        // Determine message priority
+        bool forceEmergency = force > FORCE_THRESHOLD;
+        bool velocityEmergency = USE_VELOCITY_CHECK && velocity > VELOCITY_THRESHOLD;
+        bool lockedEmergency = USE_LOCKED_AS_EMERGENCY && msg->locked;
+
+        if (forceEmergency || velocityEmergency || lockedEmergency) {
+            message.priority = EMERGENCY;
+            
+            // Optional: Log emergency triggers (uncomment for debugging)
+            // if (forceEmergency) logInfo("EMERGENCY: High force detected: " + std::to_string(force));
+            // if (velocityEmergency) logInfo("EMERGENCY: High velocity detected: " + std::to_string(velocity));
+            // if (lockedEmergency) logInfo("EMERGENCY: Device locked");
+        }
+        else if (force > FORCE_THRESHOLD * HIGH_PRIORITY_RATIO) {
             message.priority = HIGH;
+            
+            // Optional: Log high priority (uncomment for debugging)
+            // logInfo("HIGH PRIORITY: Force = " + std::to_string(force));
+        }
+        else {
+            message.priority = NORMAL;
         }
         
         // Simple serialization - create fixed size message
