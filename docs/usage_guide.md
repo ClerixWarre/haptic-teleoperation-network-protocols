@@ -56,10 +56,10 @@ ros2 run sctp_haptic_teleoperation sctp_haptic_client
 For complete system startup:
 ```bash
 # QUIC
-ros2 launch quic_haptic_teleoperation quic_haptic_system.launch.py
+ros2 launch quic_haptic quic_haptic_system.launch.py
 
 # DCCP
-ros2 launch dccp_haptic_teleoperation dccp_haptic_system.launch.py
+ros2 launch dccp_haptic dccp_haptic_system.launch.py
 
 # SCTP
 ros2 launch sctp_haptic_teleoperation sctp_haptic_system.launch.py
