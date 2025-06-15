@@ -1,32 +1,44 @@
-# Prerequisites
-*.d
+# ROS2 build artifacts
+build/
+install/
+log/
+.colcon_cache/
 
-# Compiled Object files
-*.slo
-*.lo
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Compiled files
 *.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
 *.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
 *.a
-*.lib
+*.pyc
+__pycache__/
 
-# Executables
-*.exe
-*.out
-*.app
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.bak
+*~
+
+# Core dumps
+core
+*.core
+
+# Log files not in experimental_results
+*.log
+!experimental_results/**/*.log
+
+# Large data files (consider using Git LFS for these)
+*.bag
+*.db3
+
+# Specific log files from your workspaces
+strace_client.log
+strace_output.log
