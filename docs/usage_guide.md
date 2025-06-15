@@ -17,12 +17,12 @@ ros2 run geomagic_touch geomagic_node
 # Terminal 1 - Server
 cd workspaces/quic_haptic_ws
 source install/setup.bash
-ros2 run quic_haptic_teleoperation quic_haptic_server
+ros2 run quic_haptic quic_haptic_server
 
 # Terminal 2 - Client
 cd workspaces/quic_haptic_ws
 source install/setup.bash
-ros2 run quic_haptic_teleoperation quic_haptic_client
+ros2 run quic_haptic quic_haptic_client
 ```
 
 #### DCCP Protocol
@@ -30,12 +30,12 @@ ros2 run quic_haptic_teleoperation quic_haptic_client
 # Terminal 1 - Server
 cd workspaces/dccp_haptic_ws
 source install/setup.bash
-ros2 run dccp_haptic_teleoperation dccp_haptic_server
+ros2 run dccp_haptic dccp_haptic_server
 
 # Terminal 2 - Client
 cd workspaces/dccp_haptic_ws
 source install/setup.bash
-ros2 run dccp_haptic_teleoperation dccp_haptic_client
+ros2 run dccp_haptic dccp_haptic_client
 ```
 
 #### SCTP Protocol
