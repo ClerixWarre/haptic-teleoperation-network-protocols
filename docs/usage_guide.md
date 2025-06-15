@@ -7,7 +7,7 @@
 In a new terminal:
 ```bash
 source /opt/ros/humble/setup.bash
-ros2 run geomagic_touch geomagic_node
+ros2 launch omni_common omni_state.launch.py
 ```
 
 ### 2. Run Protocol-Specific Implementations
