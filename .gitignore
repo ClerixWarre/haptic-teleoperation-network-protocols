@@ -9,6 +9,7 @@ log/
 .idea/
 *.swp
 *.swo
+*~
 
 # Compiled files
 *.o
@@ -25,20 +26,57 @@ desktop.ini
 # Temporary files
 *.tmp
 *.bak
-*~
 
 # Core dumps
 core
 *.core
 
-# Log files not in experimental_results
+# Debug and log files
 *.log
-!experimental_results/**/*.log
+*.bin
+gdb.txt
+strace_*.log
 
-# Large data files (consider using Git LFS for these)
-*.bag
+# Security files (should be generated locally)
+*.cert
+*.key
+*.pem
+
+# ROS bags
+rosbag2_*
 *.db3
+*.bag
+rosbaginfo.txt
 
-# Specific log files from your workspaces
-strace_client.log
-strace_output.log
+# Large data files
+*.csv
+*.xlsx
+
+# Temporary directories
+temp_*/
+tmp/
+
+# Package manager files
+package-lock.json
+yarn.lock
+
+# Python
+*.egg-info/
+dist/
+*.egg
+
+# C++ build files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CTestTestfile.cmake
+compile_commands.json
+
+# Doxygen
+html/
+latex/
+
+# Backup files
+*.backup
+*.old
+*_old.*
