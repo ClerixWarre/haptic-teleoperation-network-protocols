@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+  # QUIC Protocol Services
+  quic-server:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    environment:
+      - PROTOCOL=quic
+      - ROS_DOMAIN_ID=1
+    network_mode: host
+    volumes:
+      - ../experimental_results:/haptic_ws/experimental_results
+    command: ros2 run quic_haptic quic_haptic_server
+
+  quic-client:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    environment:
+      - PROTOCOL=quic
+      - ROS_DOMAIN_ID=1
+    network_mode: host
+    volumes:
+      - ../experimental_results:/haptic_ws/experimental_results
+    command: ros2 run quic_haptic quic_haptic_client
+
+  # DCCP Protocol Services
+  dccp-server:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    environment:
+      - PROTOCOL=dccp
+      - ROS_DOMAIN_ID=2
+    network_mode: host
+    privileged: true  # Required for DCCP
+    volumes:
+      - ../experimental_results:/haptic_ws/experimental_results
+    command: ros2 run dccp_haptic dccp_haptic_server
+
+  dccp-client:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    environment:
+      - PROTOCOL=dccp
+      - ROS_DOMAIN_ID=2
+    network_mode: host
+    privileged: true  # Required for DCCP
+    volumes:
+      - ../experimental_results:/haptic_ws/experimental_results
+    command: ros2 run dccp_haptic dccp_haptic_client
+
+  # SCTP Protocol Services
+  sctp-server:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    environment:
+      - PROTOCOL=sctp
+      - ROS_DOMAIN_ID=3
+    network_mode: host
+    volumes:
+      - ../experimental_results:/haptic_ws/experimental_results
+    command: ros2 run sctp_haptic_teleoperation sctp_haptic_server
+
+  sctp-client:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    environment:
+      - PROTOCOL=sctp
+      - ROS_DOMAIN_ID=3
+    network_mode: host
+    volumes:
+      - ../experimental_results:/haptic_ws/experimental_results
+    command: ros2 run sctp_haptic_teleoperation sctp_haptic_client
+
+  # Development container for testing
+  dev:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    environment:
+      - ROS_DOMAIN_ID=0
+    network_mode: host
+    volumes:
+      - ../workspaces:/haptic_ws/workspaces
+      - ../experimental_results:/haptic_ws/experimental_results
+    stdin_open: true
+    tty: true
+    command: bash
