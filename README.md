@@ -19,12 +19,12 @@ This research evaluates three emerging network protocols (QUIC, DCCP, SCTP) for 
 ## Repository Structure
 
 ```
-├── workspaces/          # ROS2 workspaces for each protocol
-├── experimental_results/# Test results and analysis
-├── scripts/            # Build and experiment scripts
-├── thesis/             # Thesis documents
-├── docs/               # Additional documentation
-└── docker/             # Docker configuration
+├── workspaces/             # ROS2 workspaces for each protocol
+├── experimental_results/   # Test results 
+├── scripts/                # Build and experiment scripts
+├── thesis/                 # Thesis documents
+├── docs/                   # Additional documentation
+└── docker/                 # Docker configuration
 ```
 
 ## Quick Start
