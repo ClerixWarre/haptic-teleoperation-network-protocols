@@ -20,7 +20,7 @@ endif()
 
 # SCTP Haptic Client
 add_executable(sctp_haptic_client
-  sctp_haptic_client.cpp
+  src/sctp_haptic_client.cpp
 )
 target_include_directories(sctp_haptic_client PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -40,7 +40,7 @@ target_link_libraries(sctp_haptic_client
 
 # SCTP Haptic Server
 add_executable(sctp_haptic_server
-  sctp_haptic_server.cpp
+  src/sctp_haptic_server.cpp
 )
 target_include_directories(sctp_haptic_server PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
